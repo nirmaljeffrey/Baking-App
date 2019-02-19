@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  package="com.example.android.bakingapp">
+
+  <uses-permission android:name="android.permission.INTERNET"/>
+
+  <application
+    android:allowBackup="true"
+    android:icon="@mipmap/ic_launcher"
+    android:label="@string/app_name"
+    android:roundIcon="@mipmap/ic_launcher_round"
+    android:supportsRtl="true"
+    android:theme="@style/AppTheme">
+    <activity
+      android:launchMode="singleTop"
+      android:name=".userInterface.MainActivity">
+      <intent-filter>
+        <action android:name="android.intent.action.MAIN"/>
+
+        <category android:name="android.intent.category.LAUNCHER"/>
+      </intent-filter>
+    </activity>
+    <activity
+      android:launchMode="singleTop"
+      android:name=".userInterface.DetailActivity"
+      android:parentActivityName=".userInterface.MainActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".userInterface.MainActivity"/>
+    </activity>
+    <activity
+      android:name=".userInterface.IngredientsActivity"
+      android:parentActivityName=".userInterface.DetailActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".userInterface.DetailActivity"/>
+    </activity>
+    <activity
+      android:launchMode="singleTop"
+      android:name=".userInterface.RecipeStepMasterActivity"
+      android:parentActivityName=".userInterface.DetailActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".userInterface.DetailActivity"/>
+    </activity>
+    <activity
+      android:launchMode="singleTop"
+      android:name=".userInterface.RecipeStepDetailActivity"
+      android:parentActivityName=".userInterface.RecipeStepMasterActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".userInterface.RecipeStepMasterActivity"/>
+    </activity>
+
+    <receiver android:name=".widget.BakingAppWidget">
+      <intent-filter>
+        <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
+      </intent-filter>
+
+      <meta-data
+        android:name="android.appwidget.provider"
+        android:resource="@xml/baking_app_widget_info"/>
+    </receiver>
+    <service android:name=".widget.BakingAppWidgetService"
+      android:permission="android.permission.BIND_REMOTEVIEWS"/>
+  </application>
+
+</manifest>

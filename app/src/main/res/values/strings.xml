@@ -1,0 +1,38 @@
+<resources>
+  <string name="app_name">Baking App</string>
+  <string name="recipe_connection_failed">No Internet Connection!</string>
+  <string name="recipe_connection_check">Please Check your Internet Connection</string>
+
+  <!-- DetailActivity -->
+  <string name="ingredient_name">Ingredients</string>
+  <string name="recipe_steps_name">Recipe Steps</string>
+  <string name="ingredient_body">List of ingredients for making a %1$s recipe for serving %2$s people</string>
+  <string name="recipe_step_body">In this tutorial, we will learn to make %1$s recipe for serving %2$s people</string>
+
+  <!-- IngredientsActivity -->
+  <string name="ingredient_table_name">Name</string>
+  <string name="ingredient_table_quantity">Qty</string>
+  <string name="ingredient_table_unit">Unit</string>
+  <string name="ingredient_error">Something Went Wrong</string>
+  <!-- RecipeStepMasterAdapter -->
+  <string name="recipe_step_master_short_description">Step %1$s : %2$s</string>
+
+  <!--RecipeStepDetailFragment-->
+  <string name="button_previous_string">Previous</string>
+  <string name="button_next_string">Next</string>
+  <string name="thumbnail_text_view">Thumbnail :</string>
+  <string name="description_text_view">Description :</string>
+
+  <!-- baking_app_widget.xml -->
+  <string name="widget_empty">Empty</string>
+
+  <!-- Content Description for accessibility -->
+  <string name="recipe_image_desc">Recipe Image</string>
+  <string name="detail_image_desc">Image Buttons for ingredients list and recipe step list</string>
+  <string name="recipe_step_detail_video_thumbnail_desc">Thumbnail</string>
+  <string name="recipe_step_detail_video_unavailable">Video Unavailable</string>
+  <string name="appwidget_text">EXAMPLE</string>
+  <string name="add_widget">Add widget</string>
+
+
+</resources>
