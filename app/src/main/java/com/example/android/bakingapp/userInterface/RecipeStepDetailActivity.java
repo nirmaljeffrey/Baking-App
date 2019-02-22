@@ -10,6 +10,7 @@ import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.model.RecipeStep;
 import com.example.android.bakingapp.userInterface.fragments.RecipeStepDetailFragment;
 import com.example.android.bakingapp.userInterface.fragments.RecipeStepDetailFragment.OnRecipeStepDetailFragmentItemClickListener;
+
 import java.util.ArrayList;
 
 public class RecipeStepDetailActivity extends AppCompatActivity implements OnRecipeStepDetailFragmentItemClickListener,OnBackStackChangedListener{
@@ -35,14 +36,11 @@ public class RecipeStepDetailActivity extends AppCompatActivity implements OnRec
       fragmentDetail=(RecipeStepDetailFragment)getSupportFragmentManager().getFragment(savedInstanceState,Constants.RECIPE_STEP_DETAIL_FRAGMENT);
     }
     else{
-      fragmentDetail = new RecipeStepDetailFragment();
-      fragmentDetail.setRecipeStep(recipeStep);
-      fragmentDetail.setRecipeStepArrayList(recipeStepArrayList);
-      FragmentTransaction fragmentTransaction = getSupportFragmentManager()
-          .beginTransaction();
-      fragmentTransaction.add(R.id.recipe_step_detail_fragment_container, fragmentDetail);
-      fragmentTransaction.addToBackStack(null);
-      fragmentTransaction.commit();
+      fragmentDetail=RecipeStepDetailFragment.getDetailFragmentInstance(recipeStepArrayList,recipeStep);
+      FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
+      fragmentTransaction.add(R.id.recipe_step_detail_fragment_container, fragmentDetail)
+                      .addToBackStack(null)
+                      .commit();
     }
   }
 
@@ -51,14 +49,12 @@ public class RecipeStepDetailActivity extends AppCompatActivity implements OnRec
 
 
     RecipeStep previousRecipeStep = recipeStepArrayList.get(recipeStepId - 1);
+        fragmentDetail=RecipeStepDetailFragment.getDetailFragmentInstance(recipeStepArrayList,previousRecipeStep);
 
-     fragmentDetail = new RecipeStepDetailFragment();
-    fragmentDetail.setRecipeStep(previousRecipeStep);
-    fragmentDetail.setRecipeStepArrayList(recipeStepArrayList);
     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.recipe_step_detail_fragment_container, fragmentDetail);
-    transaction.addToBackStack(null);
-    transaction.commit();
+    transaction.replace(R.id.recipe_step_detail_fragment_container, fragmentDetail)
+                                  .addToBackStack(null)
+                                  .commit();
 
 
 
@@ -73,13 +69,12 @@ public class RecipeStepDetailActivity extends AppCompatActivity implements OnRec
   public void nextButtonClicked(int recipeStepId) {
 
     RecipeStep nextRecipeStep = recipeStepArrayList.get(recipeStepId + 1);
-     fragmentDetail = new RecipeStepDetailFragment();
-    fragmentDetail.setRecipeStep(nextRecipeStep);
-    fragmentDetail.setRecipeStepArrayList(recipeStepArrayList);
+    fragmentDetail=RecipeStepDetailFragment.getDetailFragmentInstance(recipeStepArrayList,nextRecipeStep);
+
     FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-    transaction.replace(R.id.recipe_step_detail_fragment_container, fragmentDetail);
-    transaction.addToBackStack(null);
-    transaction.commit();
+    transaction.replace(R.id.recipe_step_detail_fragment_container, fragmentDetail)
+                          .addToBackStack(null)
+                          .commit();
     }
 
   @Override
@@ -105,4 +100,5 @@ public class RecipeStepDetailActivity extends AppCompatActivity implements OnRec
   public void onBackStackChanged() {
 
   }
+
 }

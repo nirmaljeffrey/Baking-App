@@ -34,11 +34,14 @@ public class RecipeStepMasterAdapter extends RecyclerView.Adapter<RecipeStepMast
     @Override
     public void onBindViewHolder(@NonNull MasterStepViewHolder masterStepViewHolder, int i) {
         RecipeStep recipeStep = recipeStepArrayList.get(i);
-        String shortDescription=recipeStep.getShortDescription();
-        String id = recipeStep.getId().toString();
 
+          String shortDescription = recipeStep.getShortDescription();
+          String id = String.valueOf(recipeStep.getId());
 
-        masterStepViewHolder.shortDescription.setText( String.format(context.getString(R.string.recipe_step_master_short_description),id,shortDescription));
+          masterStepViewHolder.shortDescription.setText(String
+              .format(context.getString(R.string.recipe_step_master_short_description), id,
+                  shortDescription));
+
     }
 
     @Override

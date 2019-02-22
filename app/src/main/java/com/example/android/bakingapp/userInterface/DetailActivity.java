@@ -14,10 +14,11 @@ import com.example.android.bakingapp.model.Recipe;
 import com.example.android.bakingapp.model.RecipeStep;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class DetailActivity extends AppCompatActivity {
-    private ArrayList<Ingredient> ingredientArrayList = new ArrayList<>();
-    private ArrayList<RecipeStep> recipeStepArrayList=new ArrayList<>();
+    private List<Ingredient> ingredientArrayList ;
+    private List<RecipeStep> recipeStepArrayList;
 
     private String recipeName;
     private String recipeServings;
@@ -29,10 +30,12 @@ public class DetailActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if(intent!=null){
             Recipe recipe = intent.getParcelableExtra(Constants.RECIPE_INTENT_EXTRA_CONSTANT);
-            ingredientArrayList =  recipe.getIngredients();
-            recipeStepArrayList= recipe.getSteps();
-            recipeName = recipe.getName();
-            recipeServings = recipe.getServings().toString();
+
+              ingredientArrayList = new ArrayList<>(recipe.getIngredients());
+              recipeStepArrayList = new ArrayList<>(recipe.getSteps());
+              recipeName = recipe.getName();
+              recipeServings = String.valueOf(recipe.getServings());
+
 
         }
 
@@ -47,21 +50,17 @@ public class DetailActivity extends AppCompatActivity {
         ingredientBodyTextView.setText(ingredientBodyString);
         recipeStepBodyTextView.setText(recipeStepBodyString);
 
-        ingredientCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent ingredientIntent = new Intent(DetailActivity.this,IngredientsActivity.class);
-                ingredientIntent.putParcelableArrayListExtra(Constants.INGREDIENT_LIST_INTENT_EXTRA_CONSTANT,ingredientArrayList);
-                startActivity(ingredientIntent);
-            }
+        ingredientCardView.setOnClickListener(view -> {
+            ArrayList<Ingredient> ingredients=new ArrayList<>(ingredientArrayList);
+            Intent ingredientIntent = new Intent(DetailActivity.this,IngredientsActivity.class);
+            ingredientIntent.putParcelableArrayListExtra(Constants.INGREDIENT_LIST_INTENT_EXTRA_CONSTANT,ingredients);
+            startActivity(ingredientIntent);
         });
-        recipeStepCardView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent recipeStepIntent = new Intent(DetailActivity.this,RecipeStepMasterActivity.class);
-                recipeStepIntent.putParcelableArrayListExtra(Constants.RECIPE_STEP_LIST_INTENT_EXTRA_CONSTANT,recipeStepArrayList);
-                startActivity(recipeStepIntent);
-            }
+        recipeStepCardView.setOnClickListener(view -> {
+            ArrayList<RecipeStep> recipeSteps = new ArrayList<>(recipeStepArrayList);
+            Intent recipeStepIntent = new Intent(DetailActivity.this,RecipeStepMasterActivity.class);
+            recipeStepIntent.putParcelableArrayListExtra(Constants.RECIPE_STEP_LIST_INTENT_EXTRA_CONSTANT,recipeSteps);
+            startActivity(recipeStepIntent);
         });
 
 

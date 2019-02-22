@@ -10,30 +10,29 @@
         import android.os.Parcelable.Creator;
         import com.google.gson.annotations.Expose;
         import com.google.gson.annotations.SerializedName;
-@Entity
+
 public class RecipeStep implements Parcelable
 {
-    @PrimaryKey(autoGenerate = true)
-    private int roomStepId;
+
     @SerializedName("id")
     @Expose
     private Integer id;
-  @ColumnInfo(name = "short_description")
+
     @SerializedName("shortDescription")
     @Expose
     private String shortDescription;
     @SerializedName("description")
     @Expose
     private String description;
-  @ColumnInfo(name = "video_url")
+
     @SerializedName("videoURL")
     @Expose
     private String videoURL;
-  @ColumnInfo(name = "thumbnail_url")
+
     @SerializedName("thumbnailURL")
     @Expose
     private String thumbnailURL;
-  private int recipeId;
+
 
 
 
@@ -78,26 +77,14 @@ public class RecipeStep implements Parcelable
             return new RecipeStep[size];
         }
     };
-    public int getRoomRecipeStepId() {
-        return roomStepId;
-    }
 
-    public void setRoomRecipeStepId(int roomRecipeStepId) {
-        this.roomStepId = roomRecipeStepId;
-    }
 
 
     public Integer getId() {
         return id;
     }
 
-  public int getRecipeId() {
-    return recipeId;
-  }
 
-  public void setRecipeId(int recipeId) {
-    this.recipeId = recipeId;
-  }
 
   public String getShortDescription() {
         return shortDescription;

@@ -9,7 +9,7 @@
 <FrameLayout
     android:id="@+id/recipe_step_master_fragment_container"
     android:layout_width="0dp"
-  android:layout_weight="1"
+    android:layout_weight="1"
     android:layout_height="match_parent"/>
   <View
     android:layout_width="2dp"

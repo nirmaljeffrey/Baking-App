@@ -1,11 +1,15 @@
 package com.example.android.bakingapp.repository;
 
+import android.app.Application;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 
+import com.example.android.bakingapp.database.AppExecutors;
+import com.example.android.bakingapp.database.RecipeDao;
+import com.example.android.bakingapp.database.RecipeDatabase;
 import com.example.android.bakingapp.model.Recipe;
 import com.example.android.bakingapp.retrofit.WebService;
 import com.example.android.bakingapp.retrofit.WebServiceGenerator;
@@ -13,6 +17,7 @@ import com.example.android.bakingapp.retrofit.WebServiceGenerator;
 import java.util.ArrayList;
 
 
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -20,29 +25,50 @@ import retrofit2.Response;
 
 public class BakingRepository {
     private static final String TAG = "BakingRepo";
-    private static BakingRepository bakingRepositoryInstance;
-    private WebService webService;
-   // constructor made private for singleton pattern
-    private BakingRepository(){
-        webService = WebServiceGenerator.getRetrofitInstance().create(WebService.class);
-    }
-  public static BakingRepository getBakingRepositoryInstance(){
-        if(bakingRepositoryInstance==null) {
-            bakingRepositoryInstance = new BakingRepository();
-        }
-        return bakingRepositoryInstance;
-  }
+  private RecipeDao recipeDao;
+  private static BakingRepository bakingRepository;
 
-    public LiveData<ArrayList<Recipe>> getRecipeList(){
-        final MutableLiveData<ArrayList<Recipe>> data = new MutableLiveData<>();
-        Call<ArrayList<Recipe>> recipeList = webService.getRecipes();
-        recipeList.enqueue(new Callback<ArrayList<Recipe>>() {
+
+
+
+
+
+
+
+
+    private BakingRepository(Application application) {
+      recipeDao = RecipeDatabase.getInstance(application).RecipeDao();
+
+      }
+      public static BakingRepository getInstance(Application application){
+      if(bakingRepository==null) {
+        bakingRepository = new BakingRepository(application);
+      }
+        return bakingRepository;
+      }
+
+
+
+
+    public void CallNetworkAndStoreInDb(){
+
+      WebService webService = WebServiceGenerator.buildService(WebService.class);
+        Call<ArrayList<Recipe>> recipeListCall = webService.getRecipes();
+        recipeListCall.enqueue(new Callback<ArrayList<Recipe>>() {
             @Override
             public void onResponse(@NonNull Call<ArrayList<Recipe>> call, @NonNull Response<ArrayList<Recipe>> response) {
 
                 if(response.isSuccessful()) {
                     if (response.body() != null) {
-                        data.setValue(response.body());
+
+                       List<Recipe> recipes= response.body();
+
+
+                      AppExecutors.getInstance().diskIO().execute(() -> {
+                        recipeDao.deleteAll();
+                        recipeDao.insertAllRecipes(recipes);
+                      });
+
 
                         Log.i(TAG, "onResponseMethod entered and response successful");
                     }
@@ -56,12 +82,29 @@ public class BakingRepository {
 
             @Override
             public void onFailure(@NonNull Call<ArrayList<Recipe>> call, @NonNull Throwable t) {
-                data.setValue(null);
+
                 Log.i(TAG, "onFailure method entered ");
                 Log.e(TAG, " "+ t );
 
             }
         });
-        return data;
+
     }
+
+
+
+
+
+ public LiveData<List<Recipe>> getAllRecipeList(){
+      return recipeDao.getRecipesList();
+ }
+
+
+
+
+
+
+
+
+
 }

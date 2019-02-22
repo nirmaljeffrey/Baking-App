@@ -1,6 +1,8 @@
 package com.example.android.bakingapp.userInterface.fragments;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -15,33 +17,34 @@ import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.adapter.RecipeStepMasterAdapter;
 import com.example.android.bakingapp.model.RecipeStep;
 
+import com.example.android.bakingapp.userInterface.RecipeStepMasterActivity;
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class RecipeStepMasterFragment extends Fragment implements RecipeStepMasterAdapter.RecipeStepClickListener {
-    private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
-    private RecipeStepMasterAdapter adapter;
-    private OnRecipeStepMasterFragmentItemClickListener fragmentItemClickListener;
-        public interface OnRecipeStepMasterFragmentItemClickListener {
-            void onItemClicked(RecipeStep recipeStep);
-    }
-
-    private ArrayList<RecipeStep> recipeStepArrayList;
+  private static final String BUNDLE_ARRAY_LIST="recipe_step_array_list";
+  private OnRecipeStepMasterFragmentItemClickListener fragmentItemClickListener;
+    private ArrayList<RecipeStep> recipeStepArrayList=new ArrayList<>();
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_recipe_step_master,container,false);
-        recyclerView=view.findViewById(R.id.master_step_recycler_view);
-        linearLayoutManager=new LinearLayoutManager(view.getContext(),LinearLayoutManager.VERTICAL,false);
+
+       if(getArguments()!=null){
+         recipeStepArrayList=getArguments().getParcelableArrayList(BUNDLE_ARRAY_LIST);
+       }
+
+      RecyclerView recyclerView = view.findViewById(R.id.master_step_recycler_view);
+      LinearLayoutManager linearLayoutManager = new LinearLayoutManager(view.getContext(),
+          LinearLayoutManager.VERTICAL, false);
         recyclerView.setLayoutManager(linearLayoutManager);
-        adapter=new RecipeStepMasterAdapter(this,view.getContext());
+      RecipeStepMasterAdapter adapter = new RecipeStepMasterAdapter(this, view.getContext());
         recyclerView.setAdapter(adapter);
         adapter.setRecipeStepArrayList(recipeStepArrayList);
         return view;
     }
-    public void setRecipeStepArrayList(ArrayList<RecipeStep> recipeStepArrayList) {
-        this.recipeStepArrayList = recipeStepArrayList;
-    }
+
 
 
     @Override
@@ -58,4 +61,15 @@ public class RecipeStepMasterFragment extends Fragment implements RecipeStepMast
             throw new RuntimeException("Must implement OnRecipeStepMasterFragmentItemClickListener interface");
         }
     }
+  public interface OnRecipeStepMasterFragmentItemClickListener {
+    void onItemClicked(RecipeStep recipeStep);
+  }
+  public static RecipeStepMasterFragment getMasterFragmentInstance(ArrayList<RecipeStep> recipeStepArrayList){
+      RecipeStepMasterFragment masterFragment=new RecipeStepMasterFragment();
+      Bundle bundle =new Bundle();
+      bundle.putParcelableArrayList(BUNDLE_ARRAY_LIST,recipeStepArrayList);
+      masterFragment.setArguments(bundle);
+      return masterFragment;
+  }
+
 }

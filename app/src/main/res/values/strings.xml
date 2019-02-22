@@ -1,7 +1,8 @@
 <resources>
   <string name="app_name">Baking App</string>
   <string name="recipe_connection_failed">No Internet Connection!</string>
-  <string name="recipe_connection_check">Please Check your Internet Connection</string>
+  <string name="no_recipes_found">No recipes Found</string>
+  <string name="recipe_load_network">Load Recipes From Internet</string>
 
   <!-- DetailActivity -->
   <string name="ingredient_name">Ingredients</string>

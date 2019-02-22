@@ -2,19 +2,21 @@
 
 package com.example.android.bakingapp.model;
 
-import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
-import java.util.ArrayList;
+import android.arch.persistence.room.TypeConverters;
+import com.example.android.bakingapp.database.IngredientListTypeConverter;
+import com.example.android.bakingapp.database.StepListTypeConverter;
 
 import android.os.Parcel;
 import android.os.Parcelable;
 
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
+import java.util.List;
 
 @Entity(tableName = "recipe_table")
+@TypeConverters({IngredientListTypeConverter.class,StepListTypeConverter.class})
 public class Recipe implements Parcelable {
 
   @PrimaryKey
@@ -24,14 +26,14 @@ public class Recipe implements Parcelable {
   @SerializedName("name")
   @Expose
   private String name;
-  @Ignore
+
   @SerializedName("ingredients")
   @Expose
-  private ArrayList<Ingredient> ingredients;
-  @Ignore
+  private List<Ingredient> ingredients;
+
   @SerializedName("steps")
   @Expose
-  private ArrayList<RecipeStep> steps;
+  private List<RecipeStep> steps;
   @SerializedName("servings")
   @Expose
   private Integer servings;
@@ -49,8 +51,8 @@ public class Recipe implements Parcelable {
    * @param image
    * @param steps
    */
-  public Recipe(Integer id, String name, ArrayList<Ingredient> ingredients,
-      ArrayList<RecipeStep> steps, Integer servings, String image) {
+  public Recipe(Integer id, String name, List<Ingredient> ingredients,
+      List<RecipeStep> steps, Integer servings, String image) {
 
     this.id = id;
     this.name = name;
@@ -100,12 +102,12 @@ public class Recipe implements Parcelable {
   }
 
 
-  public ArrayList<Ingredient> getIngredients() {
+  public List<Ingredient> getIngredients() {
     return ingredients;
   }
 
 
-  public ArrayList<RecipeStep> getSteps() {
+  public List<RecipeStep> getSteps() {
     return steps;
   }
 

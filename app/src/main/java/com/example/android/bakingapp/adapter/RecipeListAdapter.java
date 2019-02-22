@@ -15,6 +15,7 @@ import com.squareup.picasso.Picasso;
 import java.util.ArrayList;
 
 public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.RecipeListViewHolder> {
+
     private ArrayList<Recipe> recipeList = new ArrayList<>();
     private ListItemClickListener listener;
     public RecipeListAdapter(ListItemClickListener listItemClickListener) {
@@ -34,6 +35,7 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
 
     @Override
     public void onBindViewHolder(@NonNull RecipeListViewHolder recipeListViewHolder, int i) {
+
         Recipe recipe = recipeList.get(i);
         recipeListViewHolder.recipeName.setText(recipe.getName());
         // Double value for quantity variable is converted into string to pass as argument for TextView.setText() method.
@@ -68,13 +70,11 @@ public class RecipeListAdapter extends RecyclerView.Adapter<RecipeListAdapter.Re
             recipeImage=itemView.findViewById(R.id.recipe_image);
             recipeName=itemView.findViewById(R.id.recipe_name);
             recipeServings=itemView.findViewById(R.id.recipe_servings);
-            itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    int position = getAdapterPosition();
-                    if(listener!=null && position !=RecyclerView.NO_POSITION) {
-                        listener.onListItemClick(recipeList.get(position));
-                    }
+            itemView.setOnClickListener(view -> {
+                int position = getAdapterPosition();
+                if(listener!=null && position !=RecyclerView.NO_POSITION) {
+                    listener.onListItemClick(recipeList.get(position));
+
                 }
             });
         }

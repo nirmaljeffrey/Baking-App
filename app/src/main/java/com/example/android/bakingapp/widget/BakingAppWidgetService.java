@@ -1,15 +1,15 @@
 package com.example.android.bakingapp.widget;
 
 import android.appwidget.AppWidgetManager;
-import android.arch.lifecycle.ViewModelProviders;
 import android.content.Context;
 import android.content.Intent;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import com.example.android.bakingapp.R;
+import com.example.android.bakingapp.database.RecipeDatabase;
+import com.example.android.bakingapp.model.Ingredient;
 import com.example.android.bakingapp.model.Recipe;
-import com.example.android.bakingapp.repository.BakingRepository;
-import com.example.android.bakingapp.viewModel.RecipeViewModel;
-import java.util.ArrayList;
+import java.util.List;
 
 public class BakingAppWidgetService extends RemoteViewsService {
 
@@ -20,15 +20,21 @@ public class BakingAppWidgetService extends RemoteViewsService {
   class BakingAppViewFactory implements RemoteViewsFactory{
     private Context context;
     private int appWidgetId;
-    private ArrayList<Recipe> recipes = new ArrayList<>();
+    private List<Recipe> recipeList;
+    private List<String> ingredientQuantity;
+    private List<String> ingredientMeasure;
+    private List<String> ingredientName;
+    private List<String> recipeName;
+    private RecipeDatabase ingredientDb;
+
+
 
     public BakingAppViewFactory(Context context,Intent intent){
       this.context=context;
+      ingredientDb= RecipeDatabase.getInstance(context);
       this.appWidgetId=intent.getIntExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,AppWidgetManager.INVALID_APPWIDGET_ID);
     }
-    private void getRecipeData(){
 
-    }
     @Override
     public void onCreate() {
 
@@ -36,7 +42,26 @@ public class BakingAppWidgetService extends RemoteViewsService {
 
     @Override
     public void onDataSetChanged() {
+        recipeList=ingredientDb.RecipeDao().getRecipesForWidgets();
+        for(Recipe recipe:recipeList){
+          recipeName.add(recipe.getName());
+           List<Ingredient> list = recipe.getIngredients();
+          String quantityListString="";
+          String measureString="";
+          String nameString="";
+           for(Ingredient ingredient:list){
+             quantityListString+= ingredient.getQuantity().toString() +"\n";
+             measureString += ingredient.getMeasure() +"\n";
+             nameString+=ingredient.getIngredient()+"\n";
 
+
+
+           }
+           ingredientQuantity.add(quantityListString);
+           ingredientMeasure.add(measureString);
+           ingredientName.add(nameString);
+
+        }
 
     }
 
@@ -47,12 +72,18 @@ public class BakingAppWidgetService extends RemoteViewsService {
 
     @Override
     public int getCount() {
-      return recipes.size();
+      return recipeList.size();
     }
 
     @Override
     public RemoteViews getViewAt(int i) {
-      return null;
+      RemoteViews remoteViews=new RemoteViews(context.getPackageName(),R.layout.baking_widget_item);
+      remoteViews.setTextViewText(R.id.widget_recipe_title_text_view,recipeName.get(i));
+      remoteViews.setTextViewText(R.id.widget_ingredient_name,ingredientName.get(i));
+      remoteViews.setTextViewText(R.id.widget_ingredient_measure,ingredientMeasure.get(i));
+      remoteViews.setTextViewText(R.id.widget_ingredient_quantity,ingredientQuantity.get(i));
+
+      return remoteViews;
     }
 
     @Override
