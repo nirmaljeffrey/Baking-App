@@ -2,7 +2,8 @@
 Udacity's Android developer nano degree project
 A material design app for learning to cook recipes.
 
-## Screenshots
+## Video
+[![Baking App Demo](https://img.youtube.com/vi/dPr4QdqrW5A/0.jpg)](https://www.youtube.com/watch?v=dPr4QdqrW5A) [![ Widget for Baking App Demo](https://img.youtube.com/vi/wFOXYc7mhX0/0.jpg)](https://www.youtube.com/watch?v=wFOXYc7mhX0)
 
 ## Libraries Used
 
