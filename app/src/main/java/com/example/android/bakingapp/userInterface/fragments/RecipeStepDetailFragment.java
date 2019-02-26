@@ -1,53 +1,40 @@
 package com.example.android.bakingapp.userInterface.fragments;
 
+
 import android.content.Context;
-
-
 import android.net.Uri;
 import android.os.Bundle;
-
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
-
-
-import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-
-import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
-
-import com.example.android.bakingapp.Constants;
+import com.example.android.bakingapp.util.Constants;
 import com.example.android.bakingapp.R;
 import com.example.android.bakingapp.model.RecipeStep;
-
-import com.example.android.bakingapp.userInterface.RecipeStepDetailActivity;
+import com.example.android.bakingapp.userInterface.activities.RecipeStepDetailActivity;
 import com.google.android.exoplayer2.C;
 import com.google.android.exoplayer2.ExoPlayerFactory;
-
 import com.google.android.exoplayer2.SimpleExoPlayer;
-
 import com.google.android.exoplayer2.audio.AudioAttributes;
 import com.google.android.exoplayer2.source.ExtractorMediaSource;
 import com.google.android.exoplayer2.source.MediaSource;
-
 import com.google.android.exoplayer2.ui.PlayerView;
 import com.google.android.exoplayer2.upstream.DefaultDataSourceFactory;
 import com.google.android.exoplayer2.util.Util;
 import com.squareup.picasso.Picasso;
-
-
 import java.net.URLConnection;
-import java.security.PrivateKey;
 import java.util.ArrayList;
 
 public class RecipeStepDetailFragment extends Fragment {
-  private static final String ARRAY_LSIT_BUNDLE="recipe_step_array_list_bundle";
-  private static final String RECIPE_STEP_BUNDLE="recipe_Step_bundle";
+
+  private static final String BUTTON_VISIBILITY = "visibility";
+  private static final String ARRAY_LIST_BUNDLE = "recipe_step_array_list_bundle";
+  private static final String RECIPE_STEP_BUNDLE = "recipe_Step_bundle";
   private RecipeStep mRecipeStep;
   private PlayerView playerView;
   private ImageView thumbnailImage;
@@ -58,25 +45,42 @@ public class RecipeStepDetailFragment extends Fragment {
   private boolean playWhenReady = true;
   private long playBackPosition = -1;
   private ImageView noVideoImageView;
+  private boolean buttonsInvisible;
+  private Button nextButton;
+  private Button previousButton;
 
+  /**
+   * Method used for creating instances of RecipeStepDetailFragment
+   *
+   * @param recipeStepArrayList arguments for fragments
+   * @param recipeStep arguments for fragments
+   * @param setButtonsInvisible boolean used for checking whether to display next and previous
+   * buttons in fragment or not.
+   * @return fragment instance
+   */
+  public static RecipeStepDetailFragment getDetailFragmentInstance(
+      ArrayList<RecipeStep> recipeStepArrayList, RecipeStep recipeStep,
+      boolean setButtonsInvisible) {
+    RecipeStepDetailFragment detailFragment = new RecipeStepDetailFragment();
+    Bundle bundle = new Bundle();
+    bundle.putParcelableArrayList(ARRAY_LIST_BUNDLE, recipeStepArrayList);
+    bundle.putParcelable(RECIPE_STEP_BUNDLE, recipeStep);
+    bundle.putBoolean(BUTTON_VISIBILITY, setButtonsInvisible);
+    detailFragment.setArguments(bundle);
 
-  // Interface to communicate with activity
-  public interface OnRecipeStepDetailFragmentItemClickListener {
-
-    void previousButtonClicked(int previousStepId);
-
-    void nextButtonClicked(int nextStepId);
+    return detailFragment;
   }
+
 
   @Override
   public void onAttach(Context context) {
     super.onAttach(context);
-
-
-    try {
-      clickListener = (OnRecipeStepDetailFragmentItemClickListener) context;
-    } catch (RuntimeException e) {
-      throw new RuntimeException("Implement the OnRecipeStepDetailFragmentClickListener");
+    if (getActivity() instanceof RecipeStepDetailActivity) {
+      try {
+        clickListener = (OnRecipeStepDetailFragmentItemClickListener) context;
+      } catch (RuntimeException e) {
+        throw new RuntimeException("Implement the OnRecipeStepDetailFragmentClickListener");
+      }
     }
   }
 
@@ -85,9 +89,11 @@ public class RecipeStepDetailFragment extends Fragment {
   @Override
   public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
       @Nullable Bundle savedInstanceState) {
-    if(getArguments()!=null){
-      mRecipeStep=getArguments().getParcelable(RECIPE_STEP_BUNDLE);
-      recipeStepArrayList=getArguments().getParcelableArrayList(ARRAY_LSIT_BUNDLE);
+    if (getArguments() != null) {
+      mRecipeStep = getArguments().getParcelable(RECIPE_STEP_BUNDLE);
+      recipeStepArrayList = getArguments().getParcelableArrayList(ARRAY_LIST_BUNDLE);
+      buttonsInvisible = getArguments().getBoolean(BUTTON_VISIBILITY);
+
     }
     if (savedInstanceState != null) {
       if (savedInstanceState.containsKey(Constants.RECIPE_STEP_OBJECT_KEY) &&
@@ -107,10 +113,11 @@ public class RecipeStepDetailFragment extends Fragment {
     View view = inflater.inflate(R.layout.fragment_recipe_step_detail, container, false);
 
     initiateViews(view);
-    initiateButtons(view);
-
-
-
+    if (!buttonsInvisible) {
+      initiateButtons();
+    } else {
+      setButtonsInvisible();
+    }
 
     descriptionTextView.setText(mRecipeStep.getDescription());
     String videoUrlString = mRecipeStep.getVideoURL();
@@ -128,14 +135,18 @@ public class RecipeStepDetailFragment extends Fragment {
     return view;
   }
 
+  /**
+   * Method for initiating views in the fragment
+   *
+   * @param view used for finding views from the layout file
+   */
   private void initiateViews(View view) {
-
-
+    nextButton = view.findViewById(R.id.next_button);
+    previousButton = view.findViewById(R.id.previous_button);
     noVideoImageView = view.findViewById(R.id.no_video_image_view);
     playerView = view.findViewById(R.id.playerView);
     thumbnailImage = view.findViewById(R.id.thumbnail_imageView);
     descriptionTextView = view.findViewById(R.id.description_text_view);
-
 
 
   }
@@ -155,15 +166,16 @@ public class RecipeStepDetailFragment extends Fragment {
     }
   }
 
-  private void initiateButtons(View view) {
+  /**
+   * Method used for initiating next and previous buttons in fragment
+   */
+  private void initiateButtons() {
 
-    Button nextButton = view.findViewById(R.id.next_button);
-    Button previousButton = view.findViewById(R.id.previous_button);
     if (mRecipeStep != null) {
       if (mRecipeStep.getId() == 0) {
         previousButton.setVisibility(View.INVISIBLE);
       }
-      ;
+
       if (mRecipeStep.getId() == recipeStepArrayList.size() - 1) {
         nextButton.setVisibility(View.INVISIBLE);
       }
@@ -174,6 +186,12 @@ public class RecipeStepDetailFragment extends Fragment {
     }
   }
 
+  /**
+   * Method used for initiating the exoPlayer inside the fragment
+   *
+   * @param context input parameter used in creating exoPlayer
+   * @param mediaUri URL link for the video to display
+   */
   private void initializePlayer(Context context, Uri mediaUri) {
     if (simpleExoPlayer == null) {
       simpleExoPlayer = ExoPlayerFactory.newSimpleInstance(context);
@@ -226,7 +244,12 @@ public class RecipeStepDetailFragment extends Fragment {
     }
   }
 
-
+  /**
+   * Method to check if the image url is present in jsonResponse else it displays default image
+   *
+   * @param thumbnailUrlString URL link for the image file
+   * @param thumbnailImage ImageView to display thumbnails
+   */
   private void setThumbnailImage(String thumbnailUrlString, ImageView thumbnailImage) {
     if (isImageFile(thumbnailUrlString)) {
 
@@ -249,17 +272,22 @@ public class RecipeStepDetailFragment extends Fragment {
 
   }
 
-
-
-  public static RecipeStepDetailFragment getDetailFragmentInstance(ArrayList<RecipeStep> recipeStepArrayList,RecipeStep recipeStep){
-    RecipeStepDetailFragment detailFragment=new RecipeStepDetailFragment();
-    Bundle bundle =new Bundle();
-    bundle.putParcelableArrayList(ARRAY_LSIT_BUNDLE,recipeStepArrayList);
-    bundle.putParcelable(RECIPE_STEP_BUNDLE,recipeStep);
-    detailFragment.setArguments(bundle);
-    return detailFragment ;
+  /**
+   * Method used for hiding the next and previous buttons.
+   */
+  private void setButtonsInvisible() {
+    nextButton.setVisibility(View.GONE);
+    previousButton.setVisibility(View.GONE);
   }
 
+
+  // Interface to communicate with activity
+  public interface OnRecipeStepDetailFragmentItemClickListener {
+
+    void previousButtonClicked(int previousStepId);
+
+    void nextButtonClicked(int nextStepId);
+  }
 
 
 }

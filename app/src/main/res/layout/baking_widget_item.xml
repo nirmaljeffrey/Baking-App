@@ -1,52 +1,29 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:tools="http://schemas.android.com/tools"
-  android:orientation="vertical"
-  android:layout_width="200dp"
-  android:layout_height="wrap_content">
+  android:layout_width="250dp"
+  android:layout_height="wrap_content"
+  android:orientation="vertical">
   <TextView
     android:id="@+id/widget_recipe_title_text_view"
+    android:textStyle="bold"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/colorAccent"
     android:gravity="center_horizontal"
-    android:background="@color/colorPrimary"
     android:textColor="@android:color/white"
     android:textSize="16sp"
-    android:textStyle="bold"
     tools:text="Nutella"/>
-  <LinearLayout
-    android:layout_width="match_parent"
-    android:layout_height="match_parent">
-  <TextView
-    android:id="@+id/widget_ingredient_name"
-    android:layout_width="0dp"
-    android:layout_weight="5"
-    android:background="@android:color/white"
-    android:layout_height="wrap_content"
-    android:textSize="12sp"
-    android:textStyle="bold"
-    tools:text="Hellow youtube"/>
-    <TextView
-      android:layout_width="0dp"
-      android:layout_weight="1"
-      android:gravity="center"
-      android:layout_height="wrap_content"
-      android:id="@+id/widget_ingredient_quantity"
-      android:background="@android:color/white"
-      android:textSize="12sp"
-      android:textStyle="bold"
-      tools:text="CUP"/>
-    <TextView
-      android:layout_width="0dp"
-      android:layout_weight="1"
-      android:gravity="center"
-      android:background="@android:color/white"
-      android:layout_height="wrap_content"
-      android:id="@+id/widget_ingredient_measure"
-      android:textSize="12sp"
-      android:textStyle="bold"
-      tools:text="3KG"/>
 
-  </LinearLayout>
+    <TextView
+      android:id="@+id/widget_ingredient"
+      android:textStyle="bold"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:padding="16dp"
+      android:background="@android:color/white"
+      android:textSize="12sp"
+      tools:text="Hello youtube"/>
+
 
 </LinearLayout>

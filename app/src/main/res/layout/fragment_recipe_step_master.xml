@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context=".userInterface.activities.RecipeStepMasterActivity">
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/master_step_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
-    tools:context=".userInterface.RecipeStepMasterActivity">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/master_step_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/recipe_step_list_item"/>
+    tools:listitem="@layout/recipe_step_list_item"/>
 </LinearLayout>

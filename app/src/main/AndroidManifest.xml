@@ -14,7 +14,7 @@
     android:theme="@style/AppTheme">
     <activity
       android:launchMode="singleTop"
-      android:name=".userInterface.MainActivity">
+      android:name=".userInterface.activities.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 
@@ -23,37 +23,37 @@
     </activity>
     <activity
       android:launchMode="singleTop"
-      android:name=".userInterface.DetailActivity"
-      android:parentActivityName=".userInterface.MainActivity">
+      android:name=".userInterface.activities.DetailActivity"
+      android:parentActivityName=".userInterface.activities.MainActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value=".userInterface.MainActivity"/>
+        android:value=".userInterface.activities.MainActivity"/>
     </activity>
     <activity
-      android:name=".userInterface.IngredientsActivity"
-      android:parentActivityName=".userInterface.DetailActivity">
+      android:name=".userInterface.activities.IngredientsActivity"
+      android:parentActivityName=".userInterface.activities.DetailActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value=".userInterface.DetailActivity"/>
-    </activity>
-    <activity
-      android:launchMode="singleTop"
-      android:name=".userInterface.RecipeStepMasterActivity"
-      android:parentActivityName=".userInterface.DetailActivity">
-      <meta-data
-        android:name="android.support.PARENT_ACTIVITY"
-        android:value=".userInterface.DetailActivity"/>
+        android:value=".userInterface.activities.DetailActivity"/>
     </activity>
     <activity
       android:launchMode="singleTop"
-      android:name=".userInterface.RecipeStepDetailActivity"
-      android:parentActivityName=".userInterface.RecipeStepMasterActivity">
+      android:name=".userInterface.activities.RecipeStepMasterActivity"
+      android:parentActivityName=".userInterface.activities.DetailActivity">
       <meta-data
         android:name="android.support.PARENT_ACTIVITY"
-        android:value=".userInterface.RecipeStepMasterActivity"/>
+        android:value=".userInterface.activities.DetailActivity"/>
+    </activity>
+    <activity
+      android:launchMode="singleTop"
+      android:name=".userInterface.activities.RecipeStepDetailActivity"
+      android:parentActivityName=".userInterface.activities.RecipeStepMasterActivity">
+      <meta-data
+        android:name="android.support.PARENT_ACTIVITY"
+        android:value=".userInterface.activities.RecipeStepMasterActivity"/>
     </activity>
 
-    <receiver android:name=".widget.BakingAppWidget">
+    <receiver android:name=".widget.BakingAppWidgetProvider">
       <intent-filter>
         <action android:name="android.appwidget.action.APPWIDGET_UPDATE"/>
       </intent-filter>

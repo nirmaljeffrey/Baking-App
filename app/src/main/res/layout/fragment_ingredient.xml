@@ -1,17 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".userInterface.IngredientsActivity"
+  xmlns:tools="http://schemas.android.com/tools"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical"
+  tools:context=".userInterface.activities.IngredientsActivity">
+  <android.support.v7.widget.RecyclerView
+    android:id="@+id/ingredient_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
-
-
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/ingredient_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:listitem="@layout/ingredient_list_item"/>
-
-
+    tools:listitem="@layout/ingredient_list_item"/>
 </LinearLayout>

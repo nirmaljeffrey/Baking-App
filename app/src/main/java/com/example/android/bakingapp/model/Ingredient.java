@@ -3,13 +3,14 @@
 package com.example.android.bakingapp.model;
 
 import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-
+@Entity
 public class Ingredient implements Parcelable {
 
 
@@ -24,8 +25,9 @@ public class Ingredient implements Parcelable {
       return new Ingredient[size];
     }
   };
-
-
+  @PrimaryKey(autoGenerate = true)
+  private int roomId;
+  private int recipeId;
   @SerializedName("quantity")
   @Expose
   private Double quantity;
@@ -36,14 +38,12 @@ public class Ingredient implements Parcelable {
   @Expose
   private String ingredient;
 
-  /**
-   *
-   * @param measure
-   * @param ingredient
-   * @param quantity
-   */
-  public Ingredient(Double quantity, String measure, String ingredient) {
+  public Ingredient() {
 
+  }
+
+  @Ignore
+  public Ingredient(Double quantity, String measure, String ingredient) {
     this.quantity = quantity;
     this.measure = measure;
     this.ingredient = ingredient;
@@ -60,6 +60,21 @@ public class Ingredient implements Parcelable {
   }
 
 
+  public int getRoomId() {
+    return roomId;
+  }
+
+  public void setRoomId(int roomId) {
+    this.roomId = roomId;
+  }
+
+  public int getRecipeId() {
+    return recipeId;
+  }
+
+  public void setRecipeId(int recipeId) {
+    this.recipeId = recipeId;
+  }
 
   public Double getQuantity() {
     return quantity;
@@ -84,8 +99,6 @@ public class Ingredient implements Parcelable {
   public void setIngredient(String ingredient) {
     this.ingredient = ingredient;
   }
-
-
 
   @Override
   public int describeContents() {

@@ -1,16 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
-  android:id="@+id/two_pane_linear_layout"
   xmlns:android="http://schemas.android.com/apk/res/android"
+  android:id="@+id/two_pane_linear_layout"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="horizontal">
 
-<FrameLayout
+  <FrameLayout
     android:id="@+id/recipe_step_master_fragment_container"
     android:layout_width="0dp"
-    android:layout_weight="1"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:layout_weight="1"/>
   <View
     android:layout_width="2dp"
     android:layout_height="match_parent"
@@ -18,6 +18,6 @@
   <FrameLayout
     android:id="@+id/recipe_step_detail_fragment_container"
     android:layout_width="0dp"
-    android:layout_weight="2"
-    android:layout_height="match_parent"/>
+    android:layout_height="match_parent"
+    android:layout_weight="2"/>
 </LinearLayout>

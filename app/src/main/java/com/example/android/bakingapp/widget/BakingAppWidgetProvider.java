@@ -1,6 +1,5 @@
 package com.example.android.bakingapp.widget;
 
-import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
@@ -8,26 +7,23 @@ import android.content.Intent;
 import android.net.Uri;
 import android.widget.RemoteViews;
 import com.example.android.bakingapp.R;
-import com.example.android.bakingapp.userInterface.MainActivity;
 
 /**
  * Implementation of App Widget functionality.
  */
-public class BakingAppWidget extends AppWidgetProvider {
+public class BakingAppWidgetProvider extends AppWidgetProvider {
 
-  static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
+  private static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
       int appWidgetId) {
 
-    Intent serviceIntent =new Intent(context,BakingAppWidgetService.class);
-    serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+    Intent serviceIntent = new Intent(context, BakingAppWidgetService.class);
+    serviceIntent.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, appWidgetId);
     serviceIntent.setData(Uri.parse(serviceIntent.toUri(Intent.URI_INTENT_SCHEME)));
     // Construct the RemoteViews object
     RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.baking_app_widget);
-   views.setRemoteAdapter(R.id.widget_stack_view,serviceIntent);
+    views.setRemoteAdapter(R.id.widget_stack_view, serviceIntent);
 
-    views.setEmptyView(R.id.widget_stack_view,R.id.widget_empty_text_view);
-
-
+    views.setEmptyView(R.id.widget_stack_view, R.id.widget_empty_text_view);
 
     // Instruct the widget manager to update the widget
     appWidgetManager.updateAppWidget(appWidgetId, views);

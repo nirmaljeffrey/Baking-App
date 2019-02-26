@@ -3,7 +3,7 @@
   <string name="recipe_connection_failed">No Internet Connection!</string>
   <string name="no_recipes_found">No recipes Found</string>
   <string name="recipe_load_network">Load Recipes From Internet</string>
-
+  <string name="something_went_wrong">Something Went Wrong</string>
   <!-- DetailActivity -->
   <string name="ingredient_name">Ingredients</string>
   <string name="recipe_steps_name">Recipe Steps</string>
@@ -28,6 +28,7 @@
   <string name="widget_empty">Empty</string>
 
   <!-- Content Description for accessibility -->
+  <string name="connection_failed_desc">No Internet Connection!</string>
   <string name="recipe_image_desc">Recipe Image</string>
   <string name="detail_image_desc">Image Buttons for ingredients list and recipe step list</string>
   <string name="recipe_step_detail_video_thumbnail_desc">Thumbnail</string>
